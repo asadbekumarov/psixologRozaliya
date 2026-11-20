@@ -1,11 +1,25 @@
 import type { Metadata, Viewport } from "next";
+import { Playfair_Display, Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ApplyModalProvider } from "@/features/apply/context/ApplyModalContext";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import "../globals.css";
+
+const playfair = Playfair_Display({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin", "latin-ext", "cyrillic"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -24,66 +38,71 @@ export async function generateMetadata({
   const isRu = locale === "ru";
 
   const title = isUz
-    ? "Dinna Mirzabayeva | Psixolog & Shaxsiy Rivojlanish Treneri (Toshkent 5/5 & Onlayn)"
+    ? "Rozaliya Gabdulhakova | KBT Psixolog & Oilaviy Mutaxassis (Toshkent & Onlayn)"
     : isRu
-    ? "Динна Мирзабаева | Психолог & Тренер личностного роста (Ташкент 5/5 & Онлайн)"
-    : "Dinna Mirzabayeva | Psychologist & Personal Growth Coach (Tashkent 5/5 & Online)";
+    ? "Розалия Габдулхакова | КПТ-Психолог & Семейный Специалист (Ташкент & Онлайн)"
+    : "Rozaliya Gabdulhakova | CBT Psychologist & Family Specialist (Tashkent & Online)";
 
   const description = isUz
-    ? "Dinna Mirzabayeva (@m1rzabayevaa_021) — Toshkentda oflayn (5/5) va dunyo bo'ylab onlayn individual psixologik konsultatsiyalar hamda mualliflik treninglari. O'zingizni toping va qalbingizga xotirjamlik bering."
+    ? "Rozaliya Gabdulhakova (@psixolog_rozaliya) — KBT (kognitiv-xulq-atvor terapiyasi) asosida ishlovchi amaliyotchi psixolog. Ayollar va onalar uchun oilaviy munosabatlar hamda farzand tarbiyasi bo'yicha konsultatsiyalar va mualliflik kurslari."
     : isRu
-    ? "Динна Мирзабаева (@m1rzabayevaa_021) — Индивидуальные психологические консультации в Ташкенте (5/5) и онлайн по всему миру, авторские тренинги личностного роста."
-    : "Dinna Mirzabayeva (@m1rzabayevaa_021) — In-person psychological consultations in Tashkent (5/5), worldwide online therapy, and transformational personal growth trainings.";
+    ? "Розалия Габдулхакова (@psixolog_rozaliya) — Практикующий КПТ-психолог. Индивидуальные консультации и авторские курсы по семейным отношениям и воспитанию детей для женщин и матерей."
+    : "Rozaliya Gabdulhakova (@psixolog_rozaliya) — CBT-based practicing psychologist. Consultations and author courses on family relationships and child-rearing for women and mothers.";
 
   const keywords = isUz
     ? [
         "psixolog toshkent",
-        "dinna mirzabayeva",
+        "rozaliya gabdulhakova",
+        "kbt psixolog",
         "psixologik konsultatsiya",
         "amaliyotchi psixolog",
         "onlayn psixolog",
-        "shaxsiy rivojlanish treyningi",
+        "bola tarbiyasi psixolog",
+        "sokin onalik",
+        "baxtiyor oila",
         "ruhiy xotirjamlik",
         "ichki xavotir va depressiya",
         "psixolog qabuli",
-        "toshkent 5/5 psixolog",
         "individual terapiya",
         "oilaviy psixolog",
-        "psixologik test diagnostika",
       ]
     : isRu
     ? [
         "психолог ташкент",
-        "динна мирзабаева",
+        "розалия габдулхакова",
+        "кпт психолог",
         "психологическая консультация ташкент",
         "онлайн психолог узбекистан",
-        "практикующий психолог",
-        "тренинги личностного роста",
+        "воспитание детей психолог",
+        "спокойное материнство",
+        "счастливая семья",
         "душевное спокойствие",
         "избавление от тревоги",
-        "запись к психологу ташкент",
-        "психологический тест",
+        "семейный психолог",
       ]
     : [
         "psychologist tashkent",
-        "dinna mirzabayeva",
+        "rozaliya gabdulhakova",
+        "cbt psychologist",
         "psychological consultation tashkent",
         "online psychologist uzbekistan",
-        "mental wellness coach",
-        "personal growth trainings",
+        "family psychologist",
+        "child parenting psychologist",
         "anxiety and stress relief",
         "confidential psychological therapy",
       ];
 
-  const isProduction = process.env.VERCEL_ENV === "production";
+  const isProduction =
+    process.env.NODE_ENV === "production" ||
+    process.env.VERCEL_ENV === "production";
 
   return {
     title,
     description,
     keywords,
-    authors: [{ name: "Dinna Mirzabayeva", url: `${SITE_URL}/${locale}` }],
-    creator: "Dinna Mirzabayeva",
-    publisher: "Dinna Mirzabayeva",
+    authors: [{ name: "Rozaliya Gabdulhakova", url: `${SITE_URL}/${locale}` }],
+    creator: "Rozaliya Gabdulhakova",
+    publisher: "Rozaliya Gabdulhakova",
     metadataBase: new URL(SITE_URL),
     alternates: {
       canonical: `/${locale}`,
@@ -100,7 +119,7 @@ export async function generateMetadata({
       type: "website",
       locale: locale === "uz" ? "uz_UZ" : locale === "ru" ? "ru_RU" : "en_US",
       url: `${SITE_URL}/${locale}`,
-      siteName: "Dinna Mirzabayeva — Psixolog",
+      siteName: "Rozaliya Gabdulhakova — KBT Psixolog",
       images: [
         {
           url: `${SITE_URL}/og-image.png`,
@@ -108,7 +127,7 @@ export async function generateMetadata({
           width: 1200,
           height: 630,
           type: "image/png",
-          alt: "Dinna Mirzabayeva — Amaliyotchi Psixolog & Shaxsiy Rivojlanish Treneri",
+          alt: "Rozaliya Gabdulhakova — KBT Psixolog & Oilaviy Mutaxassis",
         },
       ],
     },
@@ -117,7 +136,7 @@ export async function generateMetadata({
       title,
       description,
       images: [`${SITE_URL}/og-image.png`],
-      creator: "@m1rzabayevaa_021",
+      creator: "@psixolog_rozaliya",
     },
     icons: {
       icon: [
@@ -146,7 +165,7 @@ export async function generateMetadata({
 }
 
 export const viewport: Viewport = {
-  themeColor: "#FAF8F5",
+  themeColor: "#F3EBE1",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -171,24 +190,24 @@ export default async function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": ["Person", "HealthAndBeautyBusiness", "MedicalBusiness"],
-    "@id": `${SITE_URL}/#dinna-mirzabayeva`,
-    name: "Dinna Mirzabayeva",
-    alternateName: "Динна Мирзабаева",
+    "@id": `${SITE_URL}/#rozaliya-gabdulhakova`,
+    name: "Rozaliya Gabdulhakova",
+    alternateName: "Розалия Габдулхакова",
     jobTitle:
       locale === "ru"
-        ? "Практикующий психолог и тренер личностного роста"
+        ? "Практикующий КПТ-психолог, специалист по семейным отношениям и воспитанию детей"
         : locale === "en"
-        ? "Certified Psychologist & Personal Growth Coach"
-        : "Amaliyotchi psixolog va shaxsiy rivojlanish treneri",
+        ? "CBT Psychologist, Family & Parenting Specialist"
+        : "KBT psixolog, oilaviy munosabatlar va farzand tarbiyasi mutaxassisi",
     description:
       locale === "ru"
-        ? "Индивидуальные психологические консультации в Ташкенте (5/5) и онлайн по всему миру. 100% конфиденциальность и бережная терапия."
+        ? "Индивидуальные консультации по КПТ и авторские курсы в Ташкенте и онлайн по всему миру. 100% конфиденциальность."
         : locale === "en"
-        ? "Confidential in-person psychological therapy in Tashkent (5/5) and worldwide online sessions."
-        : "Toshkentda oflayn (5/5) va dunyo bo'ylab onlayn individual psixologik konsultatsiyalar hamda mualliflik treninglari.",
+        ? "CBT-based individual consultations and author courses in Tashkent and worldwide online. 100% confidential."
+        : "Toshkentda oflayn va dunyo bo'ylab onlayn individual KBT konsultatsiyalar hamda mualliflik kurslari.",
     url: `${SITE_URL}/${locale}`,
-    image: `${SITE_URL}/images/hero/dinna-mirzabayeva-hero.webp`,
-    logo: `${SITE_URL}/images/brand/logo.webp`,
+    image: `${SITE_URL}/og-image.png`,
+    logo: `${SITE_URL}/images/brand/logo-mark.webp`,
     telephone: contactConfig.phone.clean,
     priceRange: "$$",
     currenciesAccepted: "UZS, USD",
@@ -239,16 +258,19 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
+      className={`${inter.variable} ${playfair.variable}`}
       suppressHydrationWarning
     >
-      <body className="font-sans antialiased" suppressHydrationWarning>
+      <body className="font-sans antialiased bg-sand text-ink selection:bg-forest selection:text-ivory" suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ApplyModalProvider>
-            <SmoothScrollProvider>{children}</SmoothScrollProvider>
+            <SmoothScrollProvider>
+              <MotionProvider>{children}</MotionProvider>
+            </SmoothScrollProvider>
           </ApplyModalProvider>
         </NextIntlClientProvider>
       </body>

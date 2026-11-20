@@ -1,246 +1,227 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import React from "react";
 import { useTranslations } from "next-intl";
-import { siteMedia, ReelItem } from "@/config/siteMedia";
-import { MaskedHeading } from "@/components/ui/MaskedHeading";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Star } from "lucide-react";
-import { ReelModal } from "@/components/ui/ReelModal";
-
-interface MediaArchiveProps {
-  onOpenApply?: (options?: string | { service?: string }) => void;
-}
+import { m, useReducedMotion } from "motion/react";
+import { Reveal } from "@/components/motion/Reveal";
 
 interface TestimonialItem {
   id: string;
   author: string;
-  role: string;
   format: string;
   avatarText: string;
-  timeAgo?: string;
   highlight: string;
   message: string;
+  topicTag?: string;
 }
 
-export function MediaArchive({}: MediaArchiveProps = {}) {
+export function MediaArchive() {
   const t = useTranslations("mediaArchive");
+  const reduced = useReducedMotion();
 
-  const [activeTab, setActiveTab] = useState<string>("testimonials");
-  const [activeReel, setActiveReel] = useState<ReelItem | null>(null);
+  const rawTestimonials: TestimonialItem[] = (t.raw("testimonials") as TestimonialItem[]) || [];
 
-  const testimonialsList: TestimonialItem[] = (t.raw("testimonials") as TestimonialItem[]) || [];
-  const reelsList = siteMedia.reels;
-  const trainingsList = siteMedia.trainings;
-
-  const tabs = [
-    { id: "testimonials", label: t("tabTestimonials"), count: testimonialsList.length },
-    { id: "reels", label: t("tabWebinars"), count: reelsList.length },
-    { id: "trainings", label: t("tabEvents"), count: trainingsList.length },
+  const topicTags = [
+    "#SokinOnalik",
+    "#OnaDamOlishi",
+    "#BolaTarbiyasi",
+    "#ShaxsiySeans",
+    "#BaxtiyorOila",
+    "#KBTterapiya",
   ];
+
+  const testimonialsList = rawTestimonials.map((item, idx) => ({
+    ...item,
+    topicTag: topicTags[idx % topicTags.length],
+  }));
+
+  const featured = testimonialsList[0];
+  const remaining = testimonialsList.slice(1);
+  const col1 = remaining.filter((_, i) => i % 2 === 0);
+  const col2 = remaining.filter((_, i) => i % 2 !== 0);
 
   return (
     <section
       id="natijalar"
       aria-label={t("sectionAria")}
-      className="scroll-mt-20 py-[var(--section-y)] border-b border-border bg-cream text-charcoal relative overflow-x-clip"
+      className="scroll-mt-28 sm:scroll-mt-32 py-20 md:py-28 lg:py-36 bg-sand text-ink relative overflow-x-clip border-b border-sand-border"
     >
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
         {/* Section Header */}
-        <div className="max-w-3xl mb-10">
-          <MaskedHeading className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight text-charcoal leading-[1.16]">
-            {t("headingPrefix")}
-            <span className="italic text-sage ml-1">
-              {t("headingHighlight")}
-            </span>
-          </MaskedHeading>
+        <div className="max-w-3xl mb-12 lg:mb-16">
+          <Reveal>
+            {/* Eyebrow with hairline rule */}
+            <div className="flex items-center gap-3 mb-4">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-terracotta font-semibold">
+                04 — {t("kicker")}
+              </span>
+              <div className="h-[1px] w-12 bg-terracotta/40" />
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-forest leading-[1.14] tracking-tight">
+              {t("headingPrefix")}
+              <span className="italic text-terracotta font-normal block sm:inline">
+                {t("headingHighlight")}
+              </span>
+            </h2>
+          </Reveal>
         </div>
 
-        {/* Tab Switcher (Horizontal scroll-snap on mobile, not sticky) */}
-        <div className="mb-10 border-b border-border flex items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar pb-1">
-          {tabs.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={`min-h-[44px] px-4 rounded-full font-mono text-xs tracking-wider uppercase transition-all shrink-0 cursor-pointer flex items-center gap-2 ${
-                  isActive
-                    ? "bg-sage text-cream shadow-sm font-semibold"
-                    : "bg-cream-200 hover:bg-cream-300 text-charcoal-muted hover:text-charcoal border border-border"
-                }`}
-              >
-                <span>{tab.label}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full ${isActive ? "bg-white/20 text-cream" : "bg-white text-charcoal-muted"}`}>
-                  {tab.count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Tab 1: Testimonials (Mobile: Scroll-snap horizontal cards 80vw / Desktop: 2-3 Columns) */}
-        {activeTab === "testimonials" && (
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-4 -mx-5 px-5 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:items-stretch sm:overflow-visible no-scrollbar">
-            {testimonialsList.map((item) => (
-              <article
-                key={item.id}
-                className="snap-center w-[80vw] max-w-[340px] shrink-0 sm:w-auto sm:shrink bg-white/80 border border-border rounded-2xl p-6 sm:p-7 shadow-card flex flex-col justify-between h-full hover:border-sage/40 transition-colors"
-              >
-                <div>
-                  {/* Top Quote & Rating */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-0.5 text-terracotta" aria-label="5 out of 5 stars">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-terracotta text-terracotta" />
-                      ))}
-                    </div>
-                    <span className="font-mono text-[10px] text-charcoal-muted uppercase tracking-wider">
-                      {item.format}
-                    </span>
+        {/* Testimonials Editorial Layout */}
+        <div className="space-y-8">
+          {/* 1. Large Featured Testimonial on Top */}
+          {featured && (
+            <Reveal>
+              <div className="bg-cream border border-sand-border rounded-3xl p-8 sm:p-10 lg:p-12 shadow-card relative overflow-hidden">
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                  <span className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-mono font-medium tracking-wide bg-forest text-ivory">
+                    {featured.topicTag}
+                  </span>
+                  <div className="flex items-center gap-1 text-terracotta">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-current" />
+                    ))}
                   </div>
-
-                  <h4 className="font-serif text-lg font-medium text-charcoal leading-snug mb-2">
-                    &ldquo;{item.highlight}&rdquo;
-                  </h4>
-
-                  <p className="text-xs sm:text-sm text-charcoal-muted leading-relaxed font-normal">
-                    {item.message}
-                  </p>
                 </div>
 
-                {/* Author Info */}
-                <div className="pt-4 mt-6 border-t border-border flex items-center gap-3">
-                  <Avatar className="w-9 h-9 border border-sage/20 bg-cream-200 text-sage font-mono text-xs">
-                    <AvatarFallback>{item.avatarText}</AvatarFallback>
+                {/* Big Serif Quote Highlight */}
+                <blockquote className="font-serif italic text-2xl sm:text-3xl lg:text-4xl text-forest font-normal leading-snug mb-6 max-w-4xl">
+                  &ldquo;{featured.highlight}&rdquo;
+                </blockquote>
+
+                {/* Message Detail */}
+                <div className="text-sm sm:text-base text-ink/80 leading-relaxed font-normal mb-8 max-w-3xl">
+                  {featured.message}
+                </div>
+
+                {/* Author Line */}
+                <div className="flex items-center gap-3 pt-6 border-t border-sand-border">
+                  <Avatar className="w-10 h-10 border border-sand-border bg-sand-deep text-forest">
+                    <AvatarFallback className="font-mono text-xs font-semibold">
+                      {featured.avatarText || "M"}
+                    </AvatarFallback>
                   </Avatar>
-                  <div className="text-left">
-                    <span className="block font-medium text-xs text-charcoal">
-                      {item.author}
-                    </span>
+                  <div>
+                    <div className="text-sm font-serif font-semibold text-forest">
+                      {featured.author}
+                    </div>
+                    <div className="text-xs font-mono text-ink/70">
+                      {featured.format} · Natijaga erishilgan keys
+                    </div>
                   </div>
                 </div>
-              </article>
-            ))}
-          </div>
-        )}
-
-        {/* Tab 2: Authentic Instagram Reels (Strict 9:16 Vertical Cards) */}
-        {activeTab === "reels" && (
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-4 -mx-5 px-5 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:items-start sm:overflow-visible no-scrollbar">
-            {reelsList.map((reel) => (
-              <div
-                key={reel.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => setActiveReel(reel)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setActiveReel(reel);
-                  }
-                }}
-                aria-label={`${reel.title} - ${t("watchOnInstagram")}`}
-                className="group relative snap-center w-[75vw] max-w-[280px] shrink-0 sm:w-full sm:max-w-none aspect-[9/16] rounded-2xl overflow-hidden border border-border bg-charcoal shadow-card hover:border-sage/60 hover:shadow-2xl transition-all flex flex-col justify-between p-5 cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage"
-              >
-                {/* Background Image */}
-                <Image
-                  src={reel.thumb}
-                  alt={reel.title}
-                  fill
-                  sizes="(max-width: 640px) 75vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-
-                {/* Dark Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/40 to-charcoal/20 group-hover:from-charcoal/90 transition-colors" />
-
-                {/* Top Action */}
-                <div className="relative z-10 flex items-center justify-end">
-                  <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center border border-white/20 group-hover:bg-sage group-hover:border-sage transition-colors">
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                  </span>
-                </div>
-
-                {/* Bottom Title & Action */}
-                <div className="relative z-10 pt-4">
-                  <h4 className="font-serif text-base sm:text-lg font-medium text-white leading-snug line-clamp-3 mb-2 drop-shadow-sm">
-                    {reel.title}
-                  </h4>
-                  <span className="inline-flex items-center gap-1 font-mono text-[11px] text-white/80 group-hover:text-cream tracking-wide">
-                    {t("watchOnInstagram")} &rarr;
-                  </span>
-                </div>
               </div>
-            ))}
+            </Reveal>
+          )}
+
+          {/* 2. Staggered/Masonry 2-Column Layout (col2 offset down by 48px on desktop) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
+            {/* Column 1 */}
+            <div className="space-y-6">
+              {col1.map((item, idx) => (
+                <Reveal key={item.id || idx} delay={idx * 0.1}>
+                  <m.article
+                    whileHover={reduced ? undefined : { y: -4 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="bg-cream border border-sand-border rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-card hover:border-forest/40 transition-colors"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-mono font-medium tracking-wide bg-forest text-ivory">
+                          {item.topicTag}
+                        </span>
+                        <div className="flex items-center gap-0.5 text-terracotta">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+
+                      <p className="font-serif italic text-lg text-forest font-medium leading-snug mb-3">
+                        &ldquo;{item.highlight}&rdquo;
+                      </p>
+
+                      <div className="bg-sand/60 rounded-xl p-4 border border-sand-border/70 text-xs sm:text-sm text-ink/85 leading-relaxed font-normal mb-5">
+                        {item.message}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-3 border-t border-sand-border">
+                      <Avatar className="w-8 h-8 border border-sand-border bg-sand-deep text-forest">
+                        <AvatarFallback className="font-mono text-xs font-semibold">
+                          {item.avatarText || "M"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="text-xs font-serif font-semibold text-forest">
+                          {item.author}
+                        </div>
+                        <div className="text-[11px] font-mono text-ink/70">
+                          {item.format}
+                        </div>
+                      </div>
+                    </div>
+                  </m.article>
+                </Reveal>
+              ))}
+            </div>
+
+            {/* Column 2 (Offset down by 48px on lg) */}
+            <div className="space-y-6 lg:pt-12">
+              {col2.map((item, idx) => (
+                <Reveal key={item.id || idx} delay={idx * 0.1 + 0.1}>
+                  <m.article
+                    whileHover={reduced ? undefined : { y: -4 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="bg-cream border border-sand-border rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-card hover:border-forest/40 transition-colors"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-mono font-medium tracking-wide bg-forest text-ivory">
+                          {item.topicTag}
+                        </span>
+                        <div className="flex items-center gap-0.5 text-terracotta">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                          ))}
+                        </div>
+                      </div>
+
+                      <p className="font-serif italic text-lg text-forest font-medium leading-snug mb-3">
+                        &ldquo;{item.highlight}&rdquo;
+                      </p>
+
+                      <div className="bg-sand/60 rounded-xl p-4 border border-sand-border/70 text-xs sm:text-sm text-ink/85 leading-relaxed font-normal mb-5">
+                        {item.message}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-3 border-t border-sand-border">
+                      <Avatar className="w-8 h-8 border border-sand-border bg-sand-deep text-forest">
+                        <AvatarFallback className="font-mono text-xs font-semibold">
+                          {item.avatarText || "M"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="text-xs font-serif font-semibold text-forest">
+                          {item.author}
+                        </div>
+                        <div className="text-[11px] font-mono text-ink/70">
+                          {item.format}
+                        </div>
+                      </div>
+                    </div>
+                  </m.article>
+                </Reveal>
+              ))}
+            </div>
           </div>
-        )}
-
-        {/* Tab 3: Authentic Training Reels (Strict 9:16 Vertical Cards) */}
-        {activeTab === "trainings" && (
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-4 -mx-5 px-5 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:items-start sm:overflow-visible no-scrollbar">
-            {trainingsList.map((item) => (
-              <div
-                key={item.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => setActiveReel(item)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setActiveReel(item);
-                  }
-                }}
-                aria-label={`${item.title} - ${t("watchOnInstagram")}`}
-                className="group relative snap-center w-[75vw] max-w-[280px] shrink-0 sm:w-full sm:max-w-none aspect-[9/16] rounded-2xl overflow-hidden border border-border bg-charcoal shadow-card hover:border-sage/60 hover:shadow-2xl transition-all flex flex-col justify-between p-5 cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage"
-              >
-                {/* Background Image */}
-                <Image
-                  src={item.thumb}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 640px) 75vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-
-                {/* Dark Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/40 to-charcoal/20 group-hover:from-charcoal/90 transition-colors" />
-
-                {/* Top Action */}
-                <div className="relative z-10 flex items-center justify-end">
-                  <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center border border-white/20 group-hover:bg-sage group-hover:border-sage transition-colors">
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                  </span>
-                </div>
-
-                {/* Bottom Title & Action */}
-                <div className="relative z-10 pt-4">
-                  <h4 className="font-serif text-base sm:text-lg font-medium text-white leading-snug line-clamp-3 mb-2 drop-shadow-sm">
-                    {item.title}
-                  </h4>
-                  <span className="inline-flex items-center gap-1 font-mono text-[11px] text-white/80 group-hover:text-cream tracking-wide">
-                    {t("watchOnInstagram")} &rarr;
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        </div>
       </div>
-
-      {/* 9:16 Vertical Instagram Reel Modal */}
-      <ReelModal
-        isOpen={Boolean(activeReel)}
-        onClose={() => setActiveReel(null)}
-        reelUrl={activeReel?.url ?? null}
-        title={activeReel?.title}
-      />
     </section>
   );
 }
+
+export default MediaArchive;

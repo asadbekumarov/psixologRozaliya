@@ -1,19 +1,26 @@
 import { ReactNode } from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { SITE_URL } from "@/config/siteConfig";
+
+export const viewport: Viewport = {
+  themeColor: "#F3EBE1",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Dinna Mirzabayeva | Psixolog va Mualliflik Treninglari",
+  title: "Rozaliya Gabdulhakova | KBT Psixolog & Oilaviy Mutaxassis",
   description:
-    "Toshkentda oflayn (5/5 manzili) va dunyo bo'ylab onlayn individual psixologik konsultatsiyalar hamda mualliflik treninglari. Dinna Mirzabayeva (@m1rzabayevaa_021).",
+    "Rozaliya Gabdulhakova (@psixolog_rozaliya) — KBT asosida ishlovchi psixolog. Ayollar va onalar uchun oilaviy munosabatlar hamda farzand tarbiyasi bo'yicha konsultatsiyalar va mualliflik kurslari.",
   openGraph: {
-    title: "Dinna Mirzabayeva | Psixolog va Mualliflik Treninglari",
+    title: "Rozaliya Gabdulhakova | KBT Psixolog & Oilaviy Mutaxassis",
     description:
-      "Toshkentda oflayn (5/5) va dunyo bo'ylab onlayn individual psixologik konsultatsiyalar hamda mualliflik treninglari.",
+      "Toshkentda oflayn va dunyo bo'ylab onlayn individual konsultatsiyalar hamda mualliflik kurslari.",
     type: "website",
     url: SITE_URL,
-    siteName: "Dinna Mirzabayeva",
+    siteName: "Rozaliya Gabdulhakova",
     images: [
       {
         url: `${SITE_URL}/og-image.png`,
@@ -21,15 +28,15 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         type: "image/png",
-        alt: "Dinna Mirzabayeva",
+        alt: "Rozaliya Gabdulhakova",
       },
     ],
   },  
   twitter: {
     card: "summary_large_image",
-    title: "Dinna Mirzabayeva | Psixolog va Mualliflik Treninglari",
+    title: "Rozaliya Gabdulhakova | KBT Psixolog & Oilaviy Mutaxassis",
     description:
-      "Toshkentda oflayn (5/5) va dunyo bo'ylab onlayn individual psixologik konsultatsiyalar hamda mualliflik treninglari.",
+      "Toshkentda oflayn va dunyo bo'ylab onlayn individual konsultatsiyalar hamda mualliflik kurslari.",
     images: [`${SITE_URL}/og-image.png`],
   },
   icons: {

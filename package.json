@@ -1,5 +1,5 @@
 {
-  "name": "dinna-mirzabayeva",
+  "name": "psixolog-rozaliya",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -29,6 +29,7 @@
     "framer-motion": "^14.2.0",
     "lenis": "^1.3.26",
     "lucide-react": "^1.76.0",
+    "motion": "^14.14.0",
     "next": "^15.1.7",
     "next-intl": "^3.26.3",
     "radix-ui": "^1.8.1",

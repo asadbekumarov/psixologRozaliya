@@ -4,16 +4,16 @@ const getBaseUrl = (): string => {
   if (process.env.NEXT_PUBLIC_SITE_URL) {
     return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
   }
-  return "https://dinnamirzabayeva.uz";
+  return "https://psixolog-rozaliya.uz";
 };
 
 export const SITE_URL = getBaseUrl();
 
 export const siteConfig = {
-  name: "Dinna Mirzabayeva",
-  title: "Dinna Mirzabayeva | Psixolog & Shaxsiy Rivojlanish Treneri",
+  name: "Rozaliya Gabdulhakova",
+  title: "Rozaliya Gabdulhakova | KBT Psixolog · Ayollar va Onalar Mutaxassisi",
   description:
-    "Toshkentda oflayn (5/5) va dunyo bo'ylab onlayn individual psixologik konsultatsiyalar hamda mualliflik treninglari.",
+    "KBT (kognitiv-xulq-atvor terapiyasi) asosida ishlovchi amaliyotchi psixolog. Ayollar va onalar uchun oilaviy munosabatlar, farzand tarbiyasi bo'yicha individual konsultatsiyalar va mualliflik kurslari.",
   url: SITE_URL,
   ogImage: `${SITE_URL}/og-image.png`,
 
@@ -22,7 +22,7 @@ export const siteConfig = {
     phoneClean: contactConfig.phone.clean,
     email: contactConfig.email.address,
     address: contactConfig.office.addressUz,
-    workingHours: "Dush - Shan: 10:00 - 19:00",
+    workingHours: "Dush - Shan: 09:00 - 20:00",
   },
 
   socials: {

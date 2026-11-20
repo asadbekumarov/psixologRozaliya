@@ -38,13 +38,13 @@ export function ApplyModal({
       onClose={onClose}
       ariaLabel={modalTitle}
     >
-      {/* Modal Header */}
-      <div className="flex justify-between items-center mb-5 pb-4 border-b border-[#E5E0D8]">
+      {/* Editorial Header Strip: bg-forest text-ivory */}
+      <div className="bg-forest text-ivory px-6 py-5 flex justify-between items-center border-b border-white/10 shrink-0">
         <div>
-          <span className="font-mono text-xs uppercase tracking-wider text-sage font-medium block mb-1">
-            Dinna Mirzabayeva
+          <span className="font-mono text-xs uppercase tracking-widest text-terracotta font-semibold block mb-0.5">
+            Rozaliya Gabdulhakova · Qabul
           </span>
-          <h3 className="font-serif text-2xl text-charcoal">
+          <h3 className="font-serif text-xl sm:text-2xl text-ivory font-normal leading-snug">
             {modalTitle}
           </h3>
         </div>
@@ -52,65 +52,70 @@ export function ApplyModal({
           type="button"
           onClick={onClose}
           aria-label={commonT("close")}
-          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-cream-200 hover:bg-cream-300 flex items-center justify-center text-charcoal-muted hover:text-charcoal transition-colors cursor-pointer"
+          className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white/10 hover:bg-white/20 text-ivory flex items-center justify-center transition-colors cursor-pointer shrink-0 ml-4"
         >
           <X className="w-4 h-4" />
         </button>
       </div>
 
-      {isSuccess ? (
-        <div className="py-2 text-left animate-in fade-in duration-300">
-          <h4 className="font-serif text-2xl sm:text-3xl text-charcoal mb-3">
-            {t("thankYouTitle")}
-          </h4>
+      {/* Scrollable Body: bg-cream */}
+      <div className="flex-1 overflow-y-auto p-6 sm:p-8 bg-cream text-ink">
+        {isSuccess ? (
+          <div className="py-2 text-left animate-in fade-in duration-300">
+            <h4 className="font-serif text-2xl sm:text-3xl text-forest mb-3">
+              {t("thankYouTitle")}
+            </h4>
 
-          <p className="text-xs sm:text-sm text-[#5C6660] leading-relaxed mb-6">
-            {t("thankYouBody")}
-          </p>
+            <p className="text-xs sm:text-sm text-ink/80 leading-relaxed mb-6 font-normal">
+              {t("thankYouBody")}
+            </p>
 
-          <div className="border-t border-b border-[#E5E0D8] py-4 mb-6 space-y-3 font-mono text-xs">
-            <div className="flex items-start gap-2">
-              <span className="text-sage shrink-0 font-bold">{t("timelineStep1Prefix")}</span>
-              <span className="text-charcoal">{t("timelineStep1Text")}</span>
+            <div className="border-t border-b border-sand-border py-4 mb-6 space-y-3 font-mono text-xs">
+              <div className="flex items-start gap-2">
+                <span className="text-forest shrink-0 font-bold">{t("timelineStep1Prefix")}</span>
+                <span className="text-ink">{t("timelineStep1Text")}</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-terracotta shrink-0 font-bold">{t("timelineStep2Prefix")}</span>
+                <span className="text-ink/80">{t("timelineStep2Text")}</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-terracotta shrink-0 font-bold">{t("timelineStep3Prefix")}</span>
+                <span className="text-ink/80">{t("timelineStep3Text")}</span>
+              </div>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-[#C59B6D] shrink-0 font-bold">{t("timelineStep2Prefix")}</span>
-              <span className="text-[#5C6660]">{t("timelineStep2Text")}</span>
-            </div>
-            <div className="flex items-start gap-2">
-              <span className="text-[#C59B6D] shrink-0 font-bold">{t("timelineStep3Prefix")}</span>
-              <span className="text-[#5C6660]">{t("timelineStep3Text")}</span>
+
+            <div className="flex flex-col gap-2.5">
+              <a
+                href={contactConfig.telegramChannel.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={contactConfig.telegramChannel.ariaLabel}
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-terracotta-hover hover:bg-terracotta text-white text-xs font-semibold rounded-full transition-all cursor-pointer shadow-md"
+              >
+                <span>{t("actionTelegram")}</span>
+                <span>↗</span>
+              </a>
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 border border-sand-border hover:bg-sand-deep text-forest text-xs font-medium rounded-full transition-all cursor-pointer"
+              >
+                <span>{commonT("close")}</span>
+              </button>
             </div>
           </div>
-
-          <div className="flex flex-col gap-2.5">
-            <a
-              href={contactConfig.telegramChannel.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={contactConfig.telegramChannel.ariaLabel}
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-sage hover:bg-sage-hover text-cream text-xs font-medium rounded-full transition-all cursor-pointer shadow-[0_4px_16px_rgba(46,90,68,0.25)]"
-            >
-              <span>{t("actionTelegram")}</span>
-              <span>↗</span>
-            </a>
-            <button
-              type="button"
-              onClick={onClose}
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 border border-[#E5E0D8] hover:bg-[#F2EFE9] text-charcoal text-xs font-medium rounded-full transition-all cursor-pointer"
-            >
-              <span>{commonT("close")}</span>
-            </button>
+        ) : (
+          <div>
+            <ApplyForm
+              onSuccess={() => setIsSuccess(true)}
+              selectedService={selectedService}
+            />
           </div>
-        </div>
-      ) : (
-        <div>
-          <ApplyForm
-            onSuccess={() => setIsSuccess(true)}
-            selectedService={selectedService}
-          />
-        </div>
-      )}
+        )}
+      </div>
     </Modal>
   );
 }
+
+export default ApplyModal;

@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { MaskedHeading } from "@/components/ui/MaskedHeading";
+import { Reveal } from "@/components/motion/Reveal";
 import { contactConfig } from "@/config/contact";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,7 +21,6 @@ import {
   Video,
   Sparkles,
   User,
-  MessageSquare,
   AlertCircle,
   Loader2,
 } from "lucide-react";
@@ -197,14 +197,6 @@ export function Contact() {
     ? "Напишите или позвоните удобным для вас способом."
     : "Feel free to call or message through your preferred channel.";
 
-  const fastReplyBadge = t.has("fastReplyBadge")
-    ? t("fastReplyBadge")
-    : isUz
-    ? "Tezkor javob"
-    : locale === "ru"
-    ? "Быстрый ответ"
-    : "Prompt reply";
-
   const channelSubtitle = t.has("channelSubtitle")
     ? t("channelSubtitle")
     : isUz
@@ -229,7 +221,7 @@ export function Contact() {
     >
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 relative z-10">
         {/* Section Header */}
-        <div className="max-w-3xl mb-12 sm:mb-16">
+        <Reveal className="max-w-3xl mb-12 sm:mb-16">
           <MaskedHeading className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight text-charcoal leading-[1.16]">
             {t("titlePrefix")}
             <span className="italic text-sage ml-1">
@@ -240,7 +232,7 @@ export function Contact() {
           <p className="text-sm sm:text-base text-charcoal-muted font-normal leading-relaxed mt-4 max-w-2xl">
             {t("description")}
           </p>
-        </div>
+        </Reveal>
 
         {/* 12-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-stretch">

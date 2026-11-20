@@ -24,16 +24,16 @@ export async function generateMetadata({
   const isRu = locale === "ru";
 
   const title = isUz
-    ? "Ichki holat diagnostikasi | Dinna Mirzabayeva"
+    ? "Ichki holat diagnostikasi | Rozaliya Gabdulhakova"
     : isRu
-    ? "Диагностика внутреннего состояния | Динна Мирзабаева"
-    : "Inner State Diagnostics | Dinna Mirzabayeva";
+    ? "Диагностика внутреннего состояния | Розалия Габдулхакова"
+    : "Inner State Diagnostics | Rozaliya Gabdulhakova";
 
   const description = isUz
     ? "3 daqiqalik psixologik diagnostika orqali ruhiy holatingiz, charchoq va stress darajangizni aniqlang hamda tavsiyalar oling."
     : isRu
     ? "Определите уровень стресса, эмоционального выгорания и получите персональные психологические рекомендации за 3 минуты."
-    : "Evaluate your mental state, stress and burnout levels in 3 minutes and receive personalized guidance from Dinna Mirzabayeva.";
+    : "Evaluate your mental state, stress and burnout levels in 3 minutes and receive personalized guidance from Rozaliya Gabdulhakova.";
 
   const pagePath = locale === "uz" ? "/test" : `/${locale}/test`;
   const canonicalUrl = `${SITE_URL}${pagePath}`;
@@ -56,7 +56,7 @@ export async function generateMetadata({
       type: "website",
       locale: locale === "uz" ? "uz_UZ" : locale === "ru" ? "ru_RU" : "en_US",
       url: canonicalUrl,
-      siteName: "Dinna Mirzabayeva",
+      siteName: "Rozaliya Gabdulhakova",
       images: [
         {
           url: `${SITE_URL}/og-image.png`,
@@ -80,7 +80,7 @@ export default async function TestPage({ params }: TestPageProps) {
   setRequestLocale(locale);
 
   return (
-    <div className="min-h-screen flex flex-col bg-cream text-charcoal">
+    <div className="min-h-screen flex flex-col bg-sand text-ink selection:bg-forest selection:text-ivory overflow-x-clip">
       <Navbar />
 
       <main className="flex-1 pt-20 flex flex-col items-center justify-center">

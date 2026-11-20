@@ -18,7 +18,7 @@ export function Gallery() {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
   const defaultAlt = useMemo(() => {
-    return t("altDefault") || "Dinna Mirzabayeva o'quvchilari bilan";
+    return t("altDefault") || "Rozaliya Gabdulhakova konsultatsiya jarayonida";
   }, [t]);
 
   const activeMedia = useMemo<LightboxMedia | null>(() => {
@@ -63,7 +63,7 @@ export function Gallery() {
           alt={defaultAlt}
           fill
           sizes="(max-width: 640px) 220px, (max-width: 1024px) 280px, 320px"
-          loading="lazy"
+          loading="eager"
           className="object-cover"
         />
       </button>
@@ -95,13 +95,13 @@ export function Gallery() {
           className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-cream to-transparent z-10"
         />
 
-        {/* Row 1: Leftward Marquee (48s speed) */}
-        <Marquee speed={48} pauseOnHover={true} reverse={false} innerClassName="gap-4 sm:gap-6 pr-4 sm:pr-6">
+        {/* Row 1: Leftward Marquee (38s speed) */}
+        <Marquee speed={38} pauseOnHover={true} reverse={false} innerClassName="gap-4 sm:gap-6 pr-4 sm:pr-6">
           {galleryRow1.map((item) => renderCard(item))}
         </Marquee>
 
-        {/* Row 2: Rightward Marquee (52s speed) */}
-        <Marquee speed={52} pauseOnHover={true} reverse={true} innerClassName="gap-4 sm:gap-6 pr-4 sm:pr-6">
+        {/* Row 2: Rightward Marquee (42s speed) */}
+        <Marquee speed={42} pauseOnHover={true} reverse={true} innerClassName="gap-4 sm:gap-6 pr-4 sm:pr-6">
           {galleryRow2.map((item) => renderCard(item))}
         </Marquee>
       </div>

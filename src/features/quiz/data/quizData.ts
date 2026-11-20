@@ -44,9 +44,9 @@ export const DIAGNOSTIC_MAP: Record<number, QuizDiagnosticResult> = {
       en: "Chronic tension and exhaustion are your nervous system's call for care. From the very first session, you will experience tangible lightness and calm.",
     },
     actionText: {
-      uz: "Stressni yengish va sokinlikka qaytish uchun Dinnaga yozing",
-      ru: "Напишите Динне, чтобы снять стресс и вернуть спокойствие",
-      en: "Message Dinna to relieve stress and restore calm",
+      uz: "Stressni yengish va sokinlikka qaytish uchun yozing",
+      ru: "Напишите, чтобы снять стресс и вернуть спокойствие",
+      en: "Reach out to relieve stress and restore calm",
     },
   },
   1: {
@@ -82,7 +82,7 @@ export const DIAGNOSTIC_MAP: Record<number, QuizDiagnosticResult> = {
     actionText: {
       uz: "Qo'rquvlarni yengib, mustahkam o'ziga ishonch topish uchun yozing",
       ru: "Напишите, чтобы обрести уверенность и отпустить страхи",
-      en: "Message Dinna to overcome fears and anchor true self-worth",
+      en: "Reach out to overcome fears and anchor true self-worth",
     },
   },
   3: {
@@ -301,6 +301,7 @@ export function calculateQuizScore(answers: number[]): number {
 }
 
 export function getQuizTier(_score: number) {
+  void _score;
   // Always returns an empathetic baseline tier object for backward compatibility
   return {
     id: "clarity",
@@ -317,9 +318,9 @@ export function getQuizTier(_score: number) {
       en: "Your situation has been carefully evaluated to identify the best therapeutic pathway.",
     },
     recommendation: {
-      uz: "Dinna Mirzabayeva bilan shaxsiy konsultatsiya belgilash tavsiya etiladi.",
-      ru: "Рекомендуется назначить индивидуальную сессию с Динной Мирзабаевой.",
-      en: "An individual session with Dinna Mirzabayeva is strongly recommended.",
+      uz: "Rozaliya Gabdulhakova bilan shaxsiy konsultatsiya belgilash tavsiya etiladi.",
+      ru: "Рекомендуется назначить индивидуальную сессию с Розалией Габдулхаковой.",
+      en: "An individual session with Rozaliya Gabdulhakova is strongly recommended.",
     },
   };
 }

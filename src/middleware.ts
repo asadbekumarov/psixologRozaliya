@@ -4,6 +4,10 @@ import { routing } from "./i18n/routing";
 export default createMiddleware(routing);
 
 export const config = {
-  // Match all pathnames except for internal Next.js/Vercel paths and static files
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  // Match all request paths except for the ones starting with:
+  // - api (API routes)
+  // - _next/static (static files)
+  // - _next/image (image optimization files)
+  // - favicon.ico, sitemap.xml, robots.txt, icon.png (metadata files)
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|icon.png|apple-icon.png|.*\\..*).*)"],
 };

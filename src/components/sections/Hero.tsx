@@ -5,266 +5,179 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { useApplyModal } from "@/features/apply/context/ApplyModalContext";
-import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Button } from "@/components/ui/button";
-import { Marquee } from "@/components/ui/Marquee";
-import { Sparkles, Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { m, useReducedMotion } from "motion/react";
+import { AnimatedCounter } from "@/components/motion/AnimatedCounter";
+import { siteMedia } from "@/config/siteMedia";
+import { EASE_EDITORIAL } from "@/lib/motion";
 
 interface HeroProps {
   onOpenModal?: () => void;
   onOpenApply?: () => void;
 }
 
-export default function Hero({ onOpenModal, onOpenApply }: HeroProps = {}) {
+export function Hero({ onOpenModal, onOpenApply }: HeroProps = {}) {
   const { openApply } = useApplyModal();
+  const reduced = useReducedMotion();
 
   const handleOpenModal = () => {
-    if (onOpenModal) {
-      onOpenModal();
-    } else if (onOpenApply) {
-      onOpenApply();
-    } else {
-      openApply();
-    }
+    if (onOpenModal) onOpenModal();
+    else if (onOpenApply) onOpenApply();
+    else openApply();
   };
 
   const t = useTranslations("hero");
-  const ctaT = useTranslations("cta");
-
-  // Localized Marquee Ticker items
-  const tickerItems: string[] = (t.raw("tickerItems") as string[]) || [];
+  const { portrait } = siteMedia.hero;
 
   return (
     <section
       id="hero"
       style={{
         background:
-          "radial-gradient(ellipse 70% 50% at 85% 15%, rgba(46, 90, 68, 0.07) 0%, rgba(197, 155, 109, 0.05) 45%, rgba(250, 248, 245, 0) 80%), #FAF8F5",
+          "radial-gradient(ellipse 70% 60% at 85% 30%, rgba(200, 109, 81, 0.16) 0%, rgba(22, 56, 50, 0) 70%), #163832",
       }}
-      className="scroll-mt-20 relative min-h-[600px] min-h-[92svh] supports-[height:100svh]:min-h-[92svh] bg-cream text-charcoal pt-24 sm:pt-28 pb-8 flex flex-col justify-between border-b border-border overflow-x-clip"
+      className="scroll-mt-20 relative bg-forest text-ivory pt-28 sm:pt-32 lg:pt-36 pb-16 lg:pb-24 overflow-x-clip"
     >
-      {/* Main Editorial Content Container */}
-      <div className="max-w-[1360px] mx-auto w-full px-5 sm:px-8 lg:px-12 my-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column (Desktop 7 cols) / Mobile Stack */}
-          <div className="lg:col-span-7 flex flex-col">
-            {/* Bespoke Editorial H1 */}
-            <h1 className="text-display font-serif font-normal tracking-[-0.02em] text-charcoal leading-[1.12] animate-hero-mask-reveal">
+      {/* Desktop Vertical Meta Rail on Left Edge */}
+      <div
+        className="hidden xl:flex absolute left-6 2xl:left-10 top-1/2 -translate-y-1/2 flex-col items-center gap-6 z-20 pointer-events-none select-none"
+        aria-hidden="true"
+      >
+        <span className="[writing-mode:vertical-rl] rotate-180 font-mono text-[10px] uppercase tracking-[0.28em] text-mist/50">
+          Toshkent · KBT Psixologiya
+        </span>
+        <div className="w-[1px] h-20 bg-white/15" />
+      </div>
+
+      <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 xl:gap-16 items-center">
+          {/* Left Column (7 cols on lg) */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            {/* Eyebrow with Hairline Rule */}
+            <div className="flex items-center gap-3 mb-5 sm:mb-6">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-terracotta font-semibold">
+                00 — {t("specialtyTag")}
+              </span>
+              <div className="h-[1px] w-12 bg-terracotta/40" />
+            </div>
+
+            {/* Headline: very large serif, tight leading, italic word */}
+            <m.h1
+              className="font-serif text-ivory text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.08] tracking-tight"
+              initial={reduced ? false : { opacity: 0.85, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE_EDITORIAL }}
+            >
               {t("titlePrefix")}
-              <span className="italic text-sage border-b border-sage/40 pb-0.5 inline-block">
+              <span className="italic text-terracotta ml-2 font-normal">
                 {t("titleHighlight")}
               </span>
               {t("titleSuffix")}
-            </h1>
+            </m.h1>
 
-            {/* 3. Mobile-Only Arch Portrait (shown after H1 on mobile, hidden on lg+) */}
-            <div className="block lg:hidden my-6 w-full max-w-[340px] mx-auto">
-              <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-2xl overflow-hidden border border-sage/20 shadow-card bg-cream-200">
-                <Image
-                  src="/images/hero/dinna-mirzabayeva-hero.webp"
-                  alt={t("portraitAlt")}
-                  fill
-                  priority
-                  sizes="(max-width: 430px) 340px, 400px"
-                  className="object-cover object-top"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/20 to-transparent pointer-events-none" />
-
-                {/* Photo Bottom Identification */}
-                <div className="absolute bottom-3.5 left-4 right-4 z-20 text-cream">
-                  <p className="font-serif italic text-xl font-normal leading-tight">
-                    Dinna Mirzabayeva
-                  </p>
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-terracotta mt-0.5">
-                    {t("captionRole")}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* 4. Single-Sentence Subheadline */}
-            <p className="text-sm sm:text-base lg:text-lg text-charcoal-muted font-normal leading-relaxed max-w-xl mt-3 lg:mt-6">
+            {/* Subtitle */}
+            <p className="text-mist max-w-xl text-base md:text-lg leading-relaxed mt-6 font-normal">
               {t("description")}
             </p>
 
-            {/* 5. CTAs */}
-            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-              {/* Primary CTA (Full-width on mobile, 52px height) */}
-              <Button
-                size="lg"
-                onClick={handleOpenModal}
-                className="group w-full sm:w-auto h-[52px] min-h-[52px] bg-sage hover:bg-sage-hover text-cream px-8 rounded-full text-sm font-semibold tracking-wide shadow-[0_8px_24px_rgba(46,90,68,0.25)] hover:shadow-[0_12px_30px_rgba(46,90,68,0.35)] cursor-pointer active:scale-[0.98] flex items-center justify-center gap-3"
-              >
-                <span>{ctaT("primary")}</span>
-                <span className="text-base transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
-                  →
-                </span>
-              </Button>
+            {/* CTA Group: Primary Button + Text Link with Arrow */}
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7">
+              <m.div whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  onClick={handleOpenModal}
+                  className="w-full sm:w-auto h-12 min-h-[48px] bg-terracotta-hover hover:bg-terracotta text-white px-8 rounded-full text-sm font-semibold tracking-wide shadow-[0_8px_24px_rgba(176,90,63,0.35)] hover:shadow-[0_12px_30px_rgba(176,90,63,0.45)] cursor-pointer active:scale-[0.98] flex items-center justify-center gap-2.5 transition-all"
+                >
+                  <span>{t("ctaPrimary")}</span>
+                  <ArrowRight className="w-4 h-4 text-white" />
+                </Button>
+              </m.div>
 
-              {/* Desktop Secondary CTA (Quiz) */}
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="hidden sm:inline-flex h-[52px] min-h-[52px] bg-white/90 hover:bg-cream-200 text-sage hover:text-sage-hover border border-sage/35 hover:border-sage px-6 rounded-full text-sm font-medium transition-all shadow-sm active:scale-[0.98] items-center gap-2"
-              >
-                <Link href="/test">
-                  <span>{t("ctaSecondary")}</span>
-                  <span className="text-xs font-mono" aria-hidden="true">↗</span>
-                </Link>
-              </Button>
-            </div>
-
-            {/* Mobile-Only Subtle Quiz Text Link */}
-            <div className="block sm:hidden text-center mt-2">
               <Link
                 href="/test"
-                className="inline-flex items-center gap-1.5 min-h-[44px] text-xs font-mono text-charcoal-muted hover:text-sage transition-colors"
+                className="group inline-flex items-center justify-center gap-2 text-ivory/90 hover:text-white font-serif text-base tracking-wide transition-colors py-2 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta rounded-lg"
               >
-                <Sparkles className="w-3.5 h-3.5 text-terracotta" />
-                <span>{t("quickQuiz")}</span>
+                <span>{t("ctaSecondary")}</span>
+                <span
+                  className="transition-transform duration-300 group-hover:translate-x-1.5 text-terracotta text-lg"
+                  aria-hidden="true"
+                >
+                  &rarr;
+                </span>
               </Link>
+            </div>
+
+            {/* Ruled Strip for Stats: 3 stats separated by 1px vertical borders, no boxes */}
+            <div className="border-t border-b border-white/10 py-6 mt-10 sm:mt-12 grid grid-cols-3 divide-x divide-white/10">
+              {/* Stat 1: Audience */}
+              <div className="pr-3 sm:pr-6">
+                <div className="font-serif text-2xl sm:text-3xl lg:text-4xl text-ivory font-normal tracking-tight">
+                  <AnimatedCounter value={t("statAudienceValue")} />
+                </div>
+                <div className="font-mono text-[10px] sm:text-xs text-mist/75 uppercase tracking-wider mt-1.5 leading-snug">
+                  {t("metric1Desc")}
+                </div>
+              </div>
+
+              {/* Stat 2: Experience */}
+              <div className="px-3 sm:px-6">
+                <div className="font-serif text-2xl sm:text-3xl lg:text-4xl text-ivory font-normal tracking-tight">
+                  <AnimatedCounter value={t("statExperienceValue")} />
+                </div>
+                <div className="font-mono text-[10px] sm:text-xs text-mist/75 uppercase tracking-wider mt-1.5 leading-snug">
+                  {t("metric2Desc")}
+                </div>
+              </div>
+
+              {/* Stat 3: Confidentiality */}
+              <div className="pl-3 sm:pl-6">
+                <div className="font-serif text-2xl sm:text-3xl lg:text-4xl text-ivory font-normal tracking-tight">
+                  <AnimatedCounter value={t("statPrivacyValue")} />
+                </div>
+                <div className="font-mono text-[10px] sm:text-xs text-mist/75 uppercase tracking-wider mt-1.5 leading-snug">
+                  {t("metric3Desc")}
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right Column (Desktop 5 cols) — Arch Sculptural Portrait */}
-          <div className="hidden lg:flex lg:col-span-5 relative justify-end w-full items-center">
-            <div className="relative w-full max-w-[345px]">
-              {/* Arch Photo Container */}
-              <div className="relative w-full aspect-[4/5] rounded-t-full rounded-b-2xl overflow-hidden border border-sage/20 shadow-modal bg-cream-200 group">
+          {/* Right Column (5 cols on lg) — Overlapping Arched Portrait */}
+          <div className="lg:col-span-5 relative lg:-mb-28 z-20 flex flex-col items-center">
+            <div className="relative w-full max-w-[380px] sm:max-w-[420px] lg:max-w-none">
+              {/* Offset Depth Outline Arch */}
+              <div
+                className="absolute inset-0 rounded-t-full rounded-b-3xl border border-ivory/20 translate-x-3.5 translate-y-3.5 -z-10 pointer-events-none hidden sm:block"
+                aria-hidden="true"
+              />
+
+              {/* Main Arched Frame */}
+              <div className="relative aspect-[4/5] w-full rounded-t-full rounded-b-3xl overflow-hidden border border-ivory/25 shadow-2xl bg-forest-light">
                 <Image
-                  src="/images/hero/dinna-mirzabayeva-hero.webp"
-                  alt={t("portraitAlt")}
+                  src={portrait.src}
+                  alt={portrait.alt}
                   fill
                   priority
-                  sizes="345px"
-                  className="object-cover object-top hover:scale-[1.02] transition-transform duration-700 ease-out"
+                  sizes="(max-width: 768px) 380px, (max-width: 1200px) 460px, 520px"
+                  className="object-cover object-top select-none"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-forest/95 via-forest/25 to-transparent pointer-events-none" />
 
-                {/* Person identification bottom overlay */}
-                <div className="absolute bottom-5 left-5 right-5 z-20 text-cream">
-                  <p className="font-serif italic text-2xl font-normal leading-tight">
-                    Dinna Mirzabayeva
-                  </p>
-                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-terracotta mt-1 font-medium">
-                    {t("captionRole")}
-                  </p>
+                <div className="absolute bottom-4 sm:bottom-5 left-4 sm:left-5 right-4 sm:right-5 z-20 flex flex-col xs:flex-row xs:items-baseline xs:justify-between gap-1 font-mono text-xs uppercase tracking-wider text-mist border-t border-white/10 pt-2.5 sm:pt-3">
+                  <span className="text-ivory font-serif text-sm sm:text-base tracking-wide truncate">
+                    Rozaliya Gabdulhakova
+                  </span>
+                  <span className="text-terracotta font-semibold text-[11px] sm:text-xs shrink-0">
+                    KBT Psixolog
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* 6. Metrics Bar */}
-        <div className="pt-8 sm:pt-10 mt-8 sm:mt-12 border-t border-border">
-          {/* Mobile Metrics: 3-column compact row (number on top, label on bottom) */}
-          <div className="grid grid-cols-3 gap-2 sm:hidden text-center">
-            {/* Metric 01 */}
-            <div className="flex flex-col items-center">
-              <div className="text-2xl font-light text-charcoal tracking-tight flex items-baseline">
-                <AnimatedCounter value="500" />
-                <span className="text-terracotta font-serif italic text-sm ml-0.5">+</span>
-              </div>
-              <span className="font-mono text-[10px] text-sage font-medium uppercase mt-1 line-clamp-1">
-                {t("metric1Label")}
-              </span>
-            </div>
-
-            {/* Metric 02 */}
-            <div className="flex flex-col items-center border-x border-border px-1">
-              <div className="text-2xl font-light text-charcoal tracking-tight flex items-baseline">
-                <AnimatedCounter value="98" />
-                <span className="text-terracotta font-serif italic text-sm ml-0.5">%</span>
-              </div>
-              <span className="font-mono text-[10px] text-sage font-medium uppercase mt-1 line-clamp-1">
-                {t("metric2Label")}
-              </span>
-            </div>
-
-            {/* Metric 03 */}
-            <div className="flex flex-col items-center">
-              <div className="text-2xl font-light text-charcoal tracking-tight flex items-center">
-                <span>5/5</span>
-                <Star className="w-3.5 h-3.5 fill-terracotta text-terracotta ml-1" />
-              </div>
-              <span className="font-mono text-[10px] text-sage font-medium uppercase mt-1 line-clamp-1">
-                {t("metric3Label")}
-              </span>
-            </div>
-          </div>
-
-          {/* Desktop & Tablet Metrics (sm+) */}
-          <div className="hidden sm:grid sm:grid-cols-3 divide-x divide-border">
-            {/* Metric 01 */}
-            <div className="pr-6 sm:pr-8 flex items-baseline justify-between">
-              <div>
-                <span className="font-mono text-xs text-sage font-semibold block mb-1">
-                  {t("metric1Label")}
-                </span>
-                <span className="text-xs sm:text-sm text-charcoal-muted font-normal">
-                  {t("metric1Desc")}
-                </span>
-              </div>
-              <div className="text-3xl sm:text-4xl font-light tracking-tight text-charcoal ml-4 flex items-baseline shrink-0">
-                <AnimatedCounter value="500" />
-                <span className="text-terracotta font-serif italic ml-0.5">+</span>
-              </div>
-            </div>
-
-            {/* Metric 02 */}
-            <div className="px-6 sm:px-8 flex items-baseline justify-between">
-              <div>
-                <span className="font-mono text-xs text-sage font-semibold block mb-1">
-                  {t("metric2Label")}
-                </span>
-                <span className="text-xs sm:text-sm text-charcoal-muted font-normal">
-                  {t("metric2Desc")}
-                </span>
-              </div>
-              <div className="text-3xl sm:text-4xl font-light tracking-tight text-charcoal ml-4 flex items-baseline shrink-0">
-                <AnimatedCounter value="98" />
-                <span className="text-terracotta font-serif italic ml-0.5">%</span>
-              </div>
-            </div>
-
-            {/* Metric 03 */}
-            <div className="pl-6 sm:pl-8 flex items-baseline justify-between">
-              <div>
-                <span className="font-mono text-xs text-sage font-semibold block mb-1">
-                  {t("metric3Label")}
-                </span>
-                <span className="text-xs sm:text-sm text-charcoal-muted font-normal">
-                  {t("metric3Desc")}
-                </span>
-              </div>
-              <div className="text-3xl sm:text-4xl font-light tracking-tight text-charcoal ml-4 flex items-center shrink-0">
-                <span>5/5</span>
-                <Star className="w-4 h-4 fill-terracotta text-terracotta ml-1" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 7. Marquee Ribbon (Reduced motion safe) */}
-      <div className="w-full border-t border-border mt-8 py-3 bg-cream/70 relative overflow-hidden">
-        <Marquee speed={32} pauseOnHover={false} className="py-0.5">
-          <div className="flex items-center gap-8 px-4 text-xs font-mono uppercase tracking-[0.16em] text-charcoal-muted">
-            {tickerItems.map((item, idx) => (
-              <React.Fragment key={idx}>
-                <span className="flex items-center gap-2 whitespace-nowrap">
-                  <Sparkles className="w-3 h-3 text-terracotta shrink-0" aria-hidden="true" />
-                  <span className="hover:text-sage transition-colors">{item}</span>
-                </span>
-                <span className="text-border" aria-hidden="true">·</span>
-              </React.Fragment>
-            ))}
-          </div>
-        </Marquee>
       </div>
     </section>
   );
 }
 
-export { Hero };
+export default Hero;

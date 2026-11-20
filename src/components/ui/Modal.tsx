@@ -34,13 +34,12 @@ export function Modal({
         <DialogPrimitive.Content
           aria-describedby={undefined}
           className={cn(
-            // FIXED ON SCREEN & ON TOP OF BACKDROP
-            "fixed z-50 bg-cream text-charcoal flex flex-col focus:outline-none shadow-modal",
-            // Mobile: Bottom Sheet
-            "inset-x-0 bottom-0 max-h-[90dvh] rounded-t-[28px] border-t border-border overflow-hidden",
+            "fixed z-50 bg-cream text-ink flex flex-col focus:outline-none shadow-2xl overflow-hidden",
+            // Mobile: Bottom Sheet Drawer
+            "inset-x-0 bottom-0 max-h-[92dvh] rounded-t-[32px] border-t border-sand-border",
             "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom duration-300",
-            // Desktop (sm: / md:): Centered Modal
-            "sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-lg sm:rounded-3xl sm:border sm:border-border sm:max-h-[90dvh]",
+            // Desktop (sm: / md:): Centered Modal Dialog
+            "sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-xl sm:rounded-3xl sm:border sm:border-sand-border sm:max-h-[88dvh]",
             "sm:data-[state=closed]:zoom-out-95 sm:data-[state=open]:zoom-in-95 sm:data-[state=closed]:slide-out-to-bottom-0 sm:data-[state=open]:slide-in-from-bottom-0",
             className
           )}
@@ -49,15 +48,8 @@ export function Modal({
             <DialogPrimitive.Title>{ariaLabel}</DialogPrimitive.Title>
           </span>
 
-          {/* Drag Handle for Mobile */}
-          <div className="pt-3 pb-1 flex justify-center shrink-0 sm:hidden" aria-hidden="true">
-            <div className="w-12 h-1.5 rounded-full bg-charcoal/20" />
-          </div>
-
-          {/* Scrollable Content Body */}
-          <div className="flex-1 overflow-y-auto p-5 sm:p-7">
-            {children}
-          </div>
+          {/* Children body container */}
+          {children}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>

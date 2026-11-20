@@ -7,7 +7,7 @@ interface TelegramSendResult {
 }
 
 /**
- * Sends a structured consultation application lead to Telegram channel for Dinna Mirzabayeva.
+ * Sends a structured consultation application lead to Telegram channel for Rozaliya Gabdulhakova.
  * Uses environment variables TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.
  */
 export async function sendTelegramLead(
@@ -94,7 +94,7 @@ export async function sendTelegramLead(
         .filter(Boolean)
         .join("\n")
     : [
-        `🌿 <b>YANGI KONSULTATSIYA ARIZASI — DINNA MIRZABAYEVA</b>`,
+        `🌿 <b>YANGI KONSULTATSIYA ARIZASI — ROZALIYA GABDULHAKOVA</b>`,
         isAnonymous ? `🔒 <b>[ANONIM MUROJAAT]</b>` : null,
         `━━━━━━━━━━━━━━━━━━━━`,
         `👤 <b>Mijoz:</b> ${clientName}`,

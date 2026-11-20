@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { Reveal } from "@/components/motion/Reveal";
 import { cn } from "@/lib/utils";
 
 interface RevealOnScrollProps {
@@ -12,28 +12,17 @@ interface RevealOnScrollProps {
   margin?: string;
 }
 
-const EASE_SWISS = [0.16, 1, 0.3, 1] as const;
-
+/**
+ * Legacy wrapper — now delegates to the motion-based Reveal primitive.
+ */
 export function RevealOnScroll({
   children,
   delay = 0,
-  yOffset = 14,
   className,
-  margin = "120px 0px",
 }: RevealOnScrollProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0.6, y: yOffset }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0, margin: margin as any }}
-      transition={{
-        duration: 0.5,
-        ease: EASE_SWISS,
-        delay,
-      }}
-      className={cn("w-full", className)}
-    >
+    <Reveal delay={delay} className={cn("w-full", className)}>
       {children}
-    </motion.div>
+    </Reveal>
   );
 }

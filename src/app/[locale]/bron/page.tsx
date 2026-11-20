@@ -24,16 +24,16 @@ export async function generateMetadata({
   const isRu = locale === "ru";
 
   const title = isUz
-    ? "Konsultatsiya uchun vaqtni tanlang | Dinna Mirzabayeva"
+    ? "Konsultatsiya uchun vaqtni tanlang | Rozaliya Gabdulhakova"
     : isRu
-    ? "Выберите время для консультации | Динна Мирзабаева"
-    : "Book a Psychological Consultation | Dinna Mirzabayeva";
+    ? "Выберите время для консультации | Розалия Габдулхакова"
+    : "Book a Psychological Consultation | Rozaliya Gabdulhakova";
 
   const description = isUz
-    ? "Dinna Mirzabayeva bilan Toshkentda oflayn (5/5) yoki onlayn individual psixologik konsultatsiya uchun qulay vaqtni tanlang."
+    ? "Rozaliya Gabdulhakova bilan Toshkentda oflayn yoki onlayn individual psixologik konsultatsiya uchun qulay vaqtni tanlang."
     : isRu
-    ? "Выберите удобное время для очной консультации в Ташкенте (5/5) или онлайн-сессии с психологом Динной Мирзабаевой."
-    : "Select a convenient time for an offline consultation in Tashkent (5/5) or online session with Dinna Mirzabayeva.";
+    ? "Выберите удобное время для очной консультации в Ташкенте или онлайн-сессии с психологом Розалией Габдулхаковой."
+    : "Select a convenient time for an offline consultation in Tashkent or online session with Rozaliya Gabdulhakova.";
 
   const pagePath = locale === "uz" ? "/bron" : `/${locale}/bron`;
   const canonicalUrl = `${SITE_URL}${pagePath}`;
@@ -56,7 +56,7 @@ export async function generateMetadata({
       type: "website",
       locale: locale === "uz" ? "uz_UZ" : locale === "ru" ? "ru_RU" : "en_US",
       url: canonicalUrl,
-      siteName: "Dinna Mirzabayeva",
+      siteName: "Rozaliya Gabdulhakova",
       images: [
         {
           url: `${SITE_URL}/og-image.png`,
@@ -80,7 +80,7 @@ export default async function BookingPage({ params }: BookingPageProps) {
   setRequestLocale(locale);
 
   return (
-    <div className="min-h-screen flex flex-col bg-cream text-charcoal selection:bg-sage/15 selection:text-sage">
+    <div className="min-h-screen flex flex-col bg-sand text-ink selection:bg-forest selection:text-ivory overflow-x-clip">
       <Navbar />
 
       <main className="flex-1 pt-20 sm:pt-24 flex flex-col">

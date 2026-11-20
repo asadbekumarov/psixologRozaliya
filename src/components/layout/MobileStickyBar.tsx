@@ -74,7 +74,7 @@ export function MobileStickyBar() {
   return (
     <aside
       aria-label={t("ariaLabel")}
-      className={`fixed bottom-0 inset-x-0 z-40 lg:hidden backdrop-blur-md bg-cream/95 border-t border-border px-4 py-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] transition-transform duration-300 ease-out shadow-[0_-8px_30px_rgba(46,90,68,0.08)] ${
+      className={`fixed bottom-0 inset-x-0 z-40 lg:hidden backdrop-blur-md bg-sand/95 border-t border-sand-border px-4 py-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] transition-transform duration-300 ease-out shadow-[0_-8px_30px_rgba(22,56,50,0.08)] ${
         shouldShow ? "translate-y-0" : "translate-y-full pointer-events-none"
       }`}
     >
@@ -82,7 +82,7 @@ export function MobileStickyBar() {
         {/* Secondary Action: Quick Quiz/Test Link */}
         <Link
           href="/test"
-          className="min-h-[48px] min-w-[44px] px-3.5 py-2 inline-flex items-center justify-center gap-1.5 text-xs font-medium text-charcoal-muted hover:text-charcoal bg-cream-200 hover:bg-cream-300 border border-border rounded-full transition-colors shrink-0 active:scale-[0.97]"
+          className="min-h-[48px] min-w-[44px] px-3.5 py-2 inline-flex items-center justify-center gap-1.5 text-xs font-medium text-ink hover:text-forest bg-cream hover:bg-sand-deep border border-sand-border rounded-full transition-colors shrink-0 active:scale-[0.97]"
         >
           <Sparkles className="w-3.5 h-3.5 text-terracotta" />
           <span>{t("takeTest")}</span>
@@ -92,7 +92,7 @@ export function MobileStickyBar() {
         <Button
           type="button"
           onClick={() => openApply()}
-          className="h-12 flex-1 rounded-full bg-sage hover:bg-sage-hover text-cream text-xs sm:text-sm font-semibold tracking-wide shadow-[0_4px_16px_rgba(46,90,68,0.25)] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+          className="h-12 min-h-[48px] flex-1 rounded-full bg-terracotta-hover hover:bg-terracotta text-ivory text-xs sm:text-sm font-semibold tracking-wide shadow-[0_4px_16px_rgba(176,90,63,0.35)] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
         >
           <span>{t("bookConsultation")}</span>
           <span className="text-sm transition-transform duration-200" aria-hidden="true">→</span>

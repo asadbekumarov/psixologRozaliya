@@ -17,8 +17,8 @@ interface MarqueeProps {
  * Takroriy nusxalarda skrinriderlar takror o'qimasligi uchun
  * barcha <Image> yoki <img> lar alt="" qilinadi.
  */
-function stripAltFromChildren(nodes: React.ReactNode): React.ReactNode {
-  return React.Children.map(nodes, (child) => {
+function stripAltFromChildren(nodes: React.ReactNode, cloneIdx = 1): React.ReactNode {
+  return React.Children.map(nodes, (child, index) => {
     if (!React.isValidElement(child)) return child;
     const props = child.props as Record<string, unknown>;
     const newProps: Record<string, unknown> = {};
@@ -27,12 +27,13 @@ function stripAltFromChildren(nodes: React.ReactNode): React.ReactNode {
       newProps.alt = "";
     }
     if (props.children) {
-      newProps.children = stripAltFromChildren(props.children as React.ReactNode);
+      newProps.children = stripAltFromChildren(props.children as React.ReactNode, cloneIdx);
     }
 
-    return Object.keys(newProps).length > 0
-      ? React.cloneElement(child, newProps)
-      : child;
+    return React.cloneElement(child, {
+      ...newProps,
+      key: `clone-${cloneIdx}-${child.key ?? index}`,
+    });
   });
 }
 
@@ -68,7 +69,7 @@ export function Marquee({
             animationDuration: `${speed}s`,
           }}
         >
-          {i === 0 ? children : stripAltFromChildren(children)}
+          {i === 0 ? children : stripAltFromChildren(children, i)}
         </div>
       ))}
     </div>

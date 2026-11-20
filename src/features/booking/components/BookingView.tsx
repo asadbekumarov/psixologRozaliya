@@ -4,8 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import dynamic from "next/dynamic";
 import { contactConfig } from "@/config/contact";
+import { Clock, ShieldCheck, CalendarCheck, ArrowRight, MessageSquare } from "lucide-react";
 
-// Dynamically import Cal embed with ssr: false to avoid window/document reference issues during SSR
+// Dynamically import Cal embed with ssr: false
 const Cal = dynamic(() => import("@calcom/embed-react"), {
   ssr: false,
   loading: () => null,
@@ -29,9 +30,6 @@ export function BookingView() {
         .replace(/\/+$/, "")
     : "";
 
-  // Cal.com does not currently support 'uz' (Uzbek).
-  // For 'uz' users, we provide 'ru' in the calendar embed as the regional secondary language,
-  // while our entire website chrome and texts strictly stay in Uzbek.
   const embedLocale = locale === "en" ? "en" : "ru";
 
   useEffect(() => {
@@ -48,19 +46,17 @@ export function BookingView() {
         const cal = await getCalApi();
         if (!isMounted) return;
 
-        // Configure theme, brand color token (#2E5A44), and layout
         cal("ui", {
           theme: "light",
           styles: {
             branding: {
-              brandColor: "#2E5A44",
+              brandColor: "#163832",
             },
           },
           hideEventTypeDetails: false,
           layout: "month_view",
         });
 
-        // Listen for successful booking events
         cal("on", {
           action: "bookingSuccessful",
           callback: () => {
@@ -75,7 +71,6 @@ export function BookingView() {
           },
         });
 
-        // Trigger skeleton dismissal when iframe finishes loading
         cal("on", {
           action: "linkReady",
           callback: () => {
@@ -88,7 +83,6 @@ export function BookingView() {
       }
     })();
 
-    // Fallback timer to hide skeleton if linkReady is delayed or blocked
     const timer = setTimeout(() => {
       if (isMounted && !hasError) {
         setIsLoaded(true);
@@ -102,168 +96,161 @@ export function BookingView() {
   }, [calLink, hasError]);
 
   return (
-    <div className="w-full max-w-[1120px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12">
-      {/* Editorial Header Section */}
-      <div className="mb-8 sm:mb-12 max-w-3xl">
-        {/* Architectural Kicker */}
-        <div className="flex items-center gap-3 mb-4">
-          <span className="w-8 h-[1.5px] bg-[#C59B6D]" />
-          <span className="font-mono text-xs uppercase tracking-[0.25em] text-sage font-medium">
-            {t("kicker")}
-          </span>
-        </div>
-
-        {/* Serif Heading */}
-        <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-charcoal font-normal tracking-[-0.02em] leading-[1.12]">
-          {t("title")}
-        </h1>
-
-        {/* Narrative Description */}
-        <p className="mt-4 sm:mt-5 text-sm sm:text-base text-[#5C6660] font-normal leading-relaxed max-w-2xl">
-          {t("description")}
-        </p>
-
-        {/* 3 Value Pillars / Badges */}
-        <div className="mt-6 sm:mt-8 pt-6 border-t border-[#E5E0D8] flex flex-wrap items-center gap-6 sm:gap-8">
-          <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-sage shrink-0" />
-            <span className="font-mono text-xs uppercase tracking-[0.18em] text-charcoal">
-              {t("badgeDuration")}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-[#C59B6D] shrink-0" />
-            <span className="font-mono text-xs uppercase tracking-[0.18em] text-charcoal">
-              {t("badgePrice")}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-sage shrink-0" />
-            <span className="font-mono text-xs uppercase tracking-[0.18em] text-charcoal">
-              {t("badgePrivacy")}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Booking Success Notification Banner */}
-      {isBooked && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="mb-8 p-6 sm:p-8 bg-[#FFFFFF] border border-sage rounded-2xl shadow-[0_12px_40px_rgba(46,90,68,0.12)] flex flex-col sm:flex-row items-start sm:items-center gap-5 transition-all duration-500 animate-in fade-in"
-        >
-          <div className="w-10 h-10 rounded-full bg-sage/15 border border-sage flex items-center justify-center text-sage shrink-0">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <div className="flex-1">
-            <h2 className="text-base sm:text-lg font-medium text-charcoal mb-1 font-serif">
-              {t("successTitle")}
-            </h2>
-            <p className="text-sm sm:text-base text-[#5C6660] font-light leading-relaxed">
-              {t("successMessage")}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Calendar Area or Fallback */}
-      <div className="relative w-full border border-[#E5E0D8] bg-[#FFFFFF] shadow-[0_8px_30px_rgb(46,90,68,0.06)] rounded-2xl overflow-hidden">
-        {hasError || !calLink ? (
-          /* Fallback Error Card if Calendar fails or env var missing */
-          <div className="py-16 sm:py-24 px-6 text-center max-w-lg mx-auto">
-            <div className="w-12 h-12 mx-auto mb-6 flex items-center justify-center rounded-full border border-[#C59B6D]/40 bg-[#C59B6D]/10 text-[#C59B6D]">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-                />
-              </svg>
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12">
+      <div className="grid grid-cols-1 lg:grid-cols-12 rounded-3xl overflow-hidden border border-sand-border shadow-2xl bg-cream">
+        {/* Left Column (5 cols on lg: bg-forest text-ivory info panel) */}
+        <div className="lg:col-span-5 bg-forest text-ivory p-6 sm:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10">
+          <div>
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-4">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-terracotta font-semibold">
+                00 — {t("kicker") || "Qabulga yozilish"}
+              </span>
+              <div className="h-[1px] w-10 bg-terracotta/40" />
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl text-charcoal mb-3">
-              {t("errorTitle")}
-            </h2>
-            <p className="text-[#5C6660] text-sm sm:text-base leading-relaxed mb-8">
-              {t("errorDesc")}
+
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-ivory font-normal leading-[1.14] tracking-tight mb-5">
+              {t("title")}
+            </h1>
+
+            <p className="text-sm sm:text-base text-mist font-normal leading-relaxed mb-8">
+              {t("description")}
             </p>
-            <a
-              href={contactConfig.telegram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 bg-sage hover:bg-sage-hover text-white px-8 py-4 text-xs uppercase tracking-[0.16em] font-medium transition-all duration-300 rounded-full shadow-[0_4px_20px_rgba(46,90,68,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-sage"
-            >
-              <span>{t("errorTelegramCta")}</span>
-              <span>→</span>
-            </a>
-          </div>
-        ) : (
-          <div className="relative min-h-[680px] w-full">
-            {/* Minimalist Skeleton Loader */}
-            {!isLoaded && (
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 z-10 bg-cream p-6 sm:p-10 flex flex-col gap-6 animate-pulse"
-              >
-                <div className="flex items-center justify-between pb-6 border-b border-[#E5E0D8]">
-                  <div className="h-6 w-48 bg-[#E5E0D8] rounded-full" />
-                  <div className="flex gap-2">
-                    <div className="h-8 w-8 bg-[#E5E0D8] rounded-full" />
-                    <div className="h-8 w-8 bg-[#E5E0D8] rounded-full" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-7 gap-3 py-2">
-                  {[...Array(7)].map((_, i) => (
-                    <div key={i} className="h-4 bg-[#E5E0D8] rounded-full" />
-                  ))}
-                </div>
-                <div className="grid grid-cols-7 gap-3 flex-1">
-                  {[...Array(28)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-14 sm:h-20 bg-[#F2EFE9] border border-[#E5E0D8]/60 rounded-xl"
-                    />
-                  ))}
+
+            {/* What to expect / Value Pillars */}
+            <div className="space-y-4 pt-6 border-t border-white/10">
+              <div className="flex items-start gap-3">
+                <Clock className="w-4 h-4 text-terracotta shrink-0 mt-0.5" />
+                <div className="text-xs sm:text-sm text-mist">
+                  <span className="font-semibold text-ivory block">{t("badgeDuration")}</span>
+                  Har bir konsultatsiya chuqur va to&apos;liq tahlilga bag&apos;ishlanadi.
                 </div>
               </div>
-            )}
 
-            {/* Cal.com Embed Component */}
-            <div className="w-full min-h-[680px]">
-              <Cal
-                calLink={calLink}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  minHeight: "680px",
-                  overflow: "auto",
-                }}
-                config={{
-                  layout: "month_view",
-                  theme: "light",
-                  locale: embedLocale,
-                }}
-              />
+              <div className="flex items-start gap-3">
+                <CalendarCheck className="w-4 h-4 text-terracotta shrink-0 mt-0.5" />
+                <div className="text-xs sm:text-sm text-mist">
+                  <span className="font-semibold text-ivory block">{t("badgePrice")}</span>
+                  Oflayn Toshkentda yoki dunyo bo&apos;ylab Zoom/Telegram orqali.
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="w-4 h-4 text-terracotta shrink-0 mt-0.5" />
+                <div className="text-xs sm:text-sm text-mist">
+                  <span className="font-semibold text-ivory block">{t("badgePrivacy")}</span>
+                  Barcha ma&apos;lumotlar to&apos;liq shifrlangan va maxfiy saqlanadi.
+                </div>
+              </div>
             </div>
           </div>
-        )}
+
+          {/* Contact note at bottom */}
+          <div className="pt-8 mt-8 border-t border-white/10 flex flex-col gap-2">
+            <span className="text-xs font-mono text-mist/75 uppercase tracking-wider">
+              Savollaringiz bormi?
+            </span>
+            <a
+              href={contactConfig.telegramDirect?.url || contactConfig.telegram?.url || "https://t.me/psixolog_rozaliya_admin"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-serif text-terracotta hover:text-white transition-colors"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>Telegram orqali to&apos;g&apos;ridan-to&apos;g&apos;ri yozish &rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Right Column (7 cols on lg: bg-cream calendar embed) */}
+        <div className="lg:col-span-7 p-4 sm:p-8 flex flex-col justify-center">
+          {isBooked && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="mb-6 p-6 bg-forest text-ivory rounded-2xl border border-white/15 shadow-lg flex items-center gap-4"
+            >
+              <div className="w-10 h-10 rounded-full bg-terracotta text-white flex items-center justify-center shrink-0">
+                <CalendarCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-base sm:text-lg font-serif font-medium text-ivory mb-1">
+                  {t("successTitle")}
+                </h2>
+                <p className="text-xs sm:text-sm text-mist leading-relaxed">
+                  {t("successMessage")}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {hasError || !calLink ? (
+            <div className="py-16 px-6 text-center max-w-md mx-auto">
+              <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-full bg-sand-deep border border-sand-border text-terracotta">
+                <CalendarCheck className="w-6 h-6" />
+              </div>
+              <h2 className="font-serif text-2xl text-forest mb-2">
+                {t("errorTitle")}
+              </h2>
+              <p className="text-ink/80 text-sm leading-relaxed mb-6 font-normal">
+                {t("errorDesc")}
+              </p>
+              <a
+                href={contactConfig.telegramDirect?.url || contactConfig.telegram?.url || "https://t.me/psixolog_rozaliya_admin"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-terracotta-hover hover:bg-terracotta text-white px-8 py-3.5 text-xs uppercase tracking-wider font-semibold rounded-full shadow-md transition-all"
+              >
+                <span>{t("errorTelegramCta")}</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          ) : (
+            <div className="relative min-h-[660px] w-full rounded-2xl overflow-hidden border border-sand-border bg-white shadow-xs">
+              {!isLoaded && (
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 z-10 bg-cream p-6 flex flex-col gap-4 animate-pulse"
+                >
+                  <div className="h-6 w-48 bg-sand-border/60 rounded-full" />
+                  <div className="grid grid-cols-7 gap-2 py-2">
+                    {[...Array(7)].map((_, i) => (
+                      <div key={i} className="h-4 bg-sand-border/40 rounded-full" />
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-7 gap-2 flex-1">
+                    {[...Array(28)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="h-16 bg-sand/60 border border-sand-border/40 rounded-xl"
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="w-full min-h-[660px]">
+                <Cal
+                  calLink={calLink}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    minHeight: "660px",
+                    overflow: "auto",
+                  }}
+                  config={{
+                    layout: "month_view",
+                    theme: "light",
+                    locale: embedLocale,
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
+
+export default BookingView;

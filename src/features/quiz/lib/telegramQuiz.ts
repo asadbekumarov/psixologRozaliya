@@ -23,7 +23,7 @@ function cleanText(str?: string): string {
 }
 
 /**
- * Dispatches structured diagnostic quiz outcome to Telegram channel/group for Dinna Mirzabayeva.
+ * Dispatches structured diagnostic quiz outcome to Telegram channel/group for Rozaliya Gabdulhakova.
  * Reads TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID from process.env.
  */
 export async function sendTelegramQuizLead(
