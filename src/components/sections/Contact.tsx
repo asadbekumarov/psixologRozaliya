@@ -250,29 +250,31 @@ export function Contact() {
               </div>
 
               <div className="space-y-3 sm:space-y-3.5 flex-1 flex flex-col justify-center">
-                {/* Phone */}
-                <a
-                  href={contactConfig.phone.href}
-                  className="group flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-cream-100 hover:bg-cream-200/90 border border-border hover:border-sage/40 transition-all min-h-[56px]"
-                >
-                  <div className="flex items-center gap-3.5 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-sage/10 text-sage flex items-center justify-center shrink-0 group-hover:bg-sage group-hover:text-cream transition-colors">
-                      <Phone className="w-4 h-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="font-mono text-[11px] text-charcoal-muted uppercase tracking-wider">
-                        {t("phoneLabel")}
+                {/* Phone (Only displayed if phone number is configured) */}
+                {contactConfig.phone.display && (
+                  <a
+                    href={contactConfig.phone.href}
+                    className="group flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-cream-100 hover:bg-cream-200/90 border border-border hover:border-sage/40 transition-all min-h-[56px]"
+                  >
+                    <div className="flex items-center gap-3.5 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-sage/10 text-sage flex items-center justify-center shrink-0 group-hover:bg-sage group-hover:text-cream transition-colors">
+                        <Phone className="w-4 h-4" />
                       </div>
-                      <div className="text-sm sm:text-base font-mono font-medium text-charcoal group-hover:text-sage transition-colors truncate">
-                        {contactConfig.phone.display}
+                      <div className="min-w-0">
+                        <div className="font-mono text-[11px] text-charcoal-muted uppercase tracking-wider">
+                          {t("phoneLabel")}
+                        </div>
+                        <div className="text-sm sm:text-base font-mono font-medium text-charcoal group-hover:text-sage transition-colors truncate">
+                          {contactConfig.phone.display}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1 text-sage text-xs font-mono shrink-0 pl-2">
-                    <span className="hidden sm:inline">Qo&apos;ng&apos;iroq</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </a>
+                    <div className="flex items-center gap-1 text-sage text-xs font-mono shrink-0 pl-2">
+                      <span className="hidden sm:inline">Qo&apos;ng&apos;iroq</span>
+                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </div>
+                  </a>
+                )}
 
                 {/* Telegram Direct */}
                 <a
