@@ -773,7 +773,21 @@
     "resultPrivacyReminder": "Your answers and personal info remain strictly private under professional ethics.",
     "ctaTelegramDirect": "Chat with Admin on Telegram",
     "ctaBooking": "Book Consultation",
-    "ctaRetake": "Retake Test"
+    "ctaRetake": "Retake Test",
+    "anonymousToggle": "Anonymous Participation (Name Optional)",
+    "submitAction": "View Result",
+    "telegramError": "Please enter your Telegram @username or phone number",
+    "kicker": "Express Test",
+    "questionLabel": "Question",
+    "confidentialBadge": "100% Confidential · 3 min · Scientific CBT",
+    "introKicker": "Initial Assessment",
+    "introDescriptionLong": "Answer honestly in 3 minutes to evaluate your current emotional state and discover the most suitable psychological direction for you.",
+    "leadKicker": "Get Results",
+    "tabPhone": "Via Phone",
+    "tabTelegram": "Via Telegram",
+    "loading": "Loading...",
+    "resultKicker": "Diagnostic Result",
+    "matchRate": "Match Rate"
   },
   "booking": {
     "kicker": "BOOK A CONSULTATION",

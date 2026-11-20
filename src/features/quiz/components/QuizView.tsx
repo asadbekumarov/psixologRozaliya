@@ -254,7 +254,7 @@ export function QuizView() {
               {/* Eyebrow */}
               <div className="flex items-center gap-2 mb-4">
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-terracotta font-semibold">
-                  00 — Ekspress test
+                  00 — {t("kicker")}
                 </span>
                 <div className="h-[1px] w-8 bg-terracotta/40" />
               </div>
@@ -271,7 +271,7 @@ export function QuizView() {
               {step === "questions" && (
                 <div className="pt-6 border-t border-white/10 space-y-2">
                   <div className="flex items-center justify-between text-xs font-mono uppercase tracking-wider text-mist">
-                    <span>Savol</span>
+                    <span>{t("questionLabel")}</span>
                     <span className="text-terracotta font-semibold">
                       {currentIdx + 1} / {totalQuestions} ({progressPercent}%)
                     </span>
@@ -287,7 +287,7 @@ export function QuizView() {
             {/* Bottom Confidentiality Badge */}
             <div className="pt-6 mt-6 border-t border-white/10 flex items-center gap-3 text-xs font-mono text-mist/80">
               <Lock className="w-4 h-4 text-terracotta shrink-0" />
-              <span>100% maxfiy · 3 daqiqa · Ilmiy KBT</span>
+              <span>{t("confidentialBadge")}</span>
             </div>
           </div>
 
@@ -297,13 +297,13 @@ export function QuizView() {
             {step === "intro" && (
               <div className="max-w-xl">
                 <span className="font-mono text-xs uppercase tracking-widest text-terracotta font-semibold block mb-2">
-                  Dastlabki diagnostika
+                  {t("introKicker")}
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl text-forest font-normal leading-snug mb-4">
                   {t("introSubtitle")}
                 </h2>
                 <p className="text-sm sm:text-base text-ink/80 leading-relaxed font-normal mb-8">
-                  3 daqiqa davomida bir necha savollarga samimiy javob bering va o&apos;zingizning hozirgi emotsional holatingiz hamda eng to&apos;g&apos;ri psixologik yo&apos;nalishingizni aniqlang.
+                  {t("introDescriptionLong")}
                 </p>
 
                 <m.div whileTap={{ scale: 0.98 }}>
@@ -406,7 +406,7 @@ export function QuizView() {
               <form onSubmit={handleSubmitLead} className="max-w-lg space-y-6">
                 <div>
                   <span className="font-mono text-xs uppercase tracking-widest text-terracotta font-semibold block mb-1">
-                    Natijani olish
+                    {t("leadKicker")}
                   </span>
                   <h2 className="font-serif text-2xl sm:text-3xl text-forest font-normal leading-snug">
                     {t("leadTitle")}
@@ -459,7 +459,7 @@ export function QuizView() {
                           : "bg-cream text-ink/75 border border-sand-border"
                       }`}
                     >
-                      Telefon orqali
+                      {t("tabPhone")}
                     </button>
                     <button
                       type="button"
@@ -470,7 +470,7 @@ export function QuizView() {
                           : "bg-cream text-ink/75 border border-sand-border"
                       }`}
                     >
-                      Telegram orqali
+                      {t("tabTelegram")}
                     </button>
                   </div>
 
@@ -511,7 +511,7 @@ export function QuizView() {
                     disabled={isSubmitting}
                     className="w-full h-12 min-h-[48px] rounded-full bg-terracotta-hover hover:bg-terracotta text-white font-semibold text-sm shadow-[0_8px_24px_rgba(176,90,63,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>{isSubmitting ? "Yuklanmoqda..." : t("submitAction")}</span>
+                    <span>{isSubmitting ? t("loading") : t("submitAction")}</span>
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </m.div>
@@ -523,7 +523,7 @@ export function QuizView() {
               <div className="max-w-xl space-y-6">
                 <div>
                   <span className="font-mono text-xs uppercase tracking-widest text-terracotta font-semibold block mb-1">
-                    Diagnostika natijasi
+                    {t("resultKicker")}
                   </span>
                   <h2 className="font-serif text-3xl sm:text-4xl text-forest font-normal leading-snug">
                     {resultData.diagnostic.serviceTitle[locale] || resultData.diagnostic.serviceTitle.uz}
@@ -533,7 +533,7 @@ export function QuizView() {
                 {/* Score Visual Bar */}
                 <div className="p-5 rounded-2xl bg-cream border border-sand-border">
                   <div className="flex items-center justify-between text-xs font-mono uppercase tracking-wider text-ink/70 mb-2">
-                    <span>Moslik darajasi</span>
+                    <span>{t("matchRate")}</span>
                     <span className="text-forest font-bold text-sm">
                       {Math.min(100, Math.max(60, Math.round((resultData.score / 15) * 100)))}%
                     </span>
@@ -567,7 +567,7 @@ export function QuizView() {
                     className="inline-flex items-center justify-center gap-2 h-12 min-h-[48px] px-6 rounded-full bg-cream hover:bg-sand border border-sand-border text-forest font-serif text-sm transition-colors cursor-pointer"
                   >
                     <RotateCcw className="w-4 h-4" />
-                    <span>Qayta topshirish</span>
+                    <span>{t("retakeAction")}</span>
                   </button>
                 </div>
               </div>
