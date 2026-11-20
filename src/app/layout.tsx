@@ -23,8 +23,7 @@ export const metadata: Metadata = {
     siteName: "Rozaliya Gabdulhakova",
     images: [
       {
-        url: `${SITE_URL}/og-image.png`,
-        secureUrl: `${SITE_URL}/og-image.png`,
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         type: "image/png",
@@ -37,7 +36,7 @@ export const metadata: Metadata = {
     title: "Rozaliya Gabdulhakova | KBT Psixolog & Oilaviy Mutaxassis",
     description:
       "Toshkentda oflayn va dunyo bo'ylab onlayn individual konsultatsiyalar hamda mualliflik kurslari.",
-    images: [`${SITE_URL}/og-image.png`],
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [

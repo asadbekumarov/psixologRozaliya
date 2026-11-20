@@ -122,8 +122,7 @@ export async function generateMetadata({
       siteName: "Rozaliya Gabdulhakova — KBT Psixolog",
       images: [
         {
-          url: `${SITE_URL}/og-image.png`,
-          secureUrl: `${SITE_URL}/og-image.png`,
+          url: "/og-image.png",
           width: 1200,
           height: 630,
           type: "image/png",
@@ -135,7 +134,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [`${SITE_URL}/og-image.png`],
+      images: ["/og-image.png"],
       creator: "@psixolog_rozaliya",
     },
     icons: {

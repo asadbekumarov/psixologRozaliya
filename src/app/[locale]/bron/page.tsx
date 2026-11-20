@@ -59,7 +59,7 @@ export async function generateMetadata({
       siteName: "Rozaliya Gabdulhakova",
       images: [
         {
-          url: `${SITE_URL}/og-image.png`,
+          url: "/og-image.png",
           width: 1200,
           height: 630,
           alt: title,
@@ -70,7 +70,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [`${SITE_URL}/og-image.png`],
+      images: ["/og-image.png"],
     },
   };
 }
